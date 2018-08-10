@@ -13,24 +13,27 @@ export default {
     {
       file: pkg.main,
       format: 'cjs',
-      sourcemap: true
+      sourcemap: true,
     },
     {
       file: pkg.module,
       format: 'es',
-      sourcemap: true
-    }
+      sourcemap: true,
+    },
   ],
   plugins: [
     external(),
     postcss({
-      modules: true
+      modules: true,
     }),
     url(),
     babel({
-      exclude: 'node_modules/**'
+      // exclude: 'node_modules/**',
+      include: ['src/**', 'node_modules/ol/**'],
+      // babelrc: false,
+      // presets: [['env', { modules: false }]]
     }),
     resolve(),
-    commonjs()
-  ]
+    commonjs(),
+  ],
 }
