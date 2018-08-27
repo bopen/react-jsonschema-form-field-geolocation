@@ -456,7 +456,9 @@ var GeolocationField = function (_PureComponent) {
           name = _props.name;
       var zoom = uiSchema.zoom,
           defaultLocation = uiSchema.defaultLocation,
-          height = uiSchema.height;
+          height = uiSchema.height,
+          _uiSchema$showTitle = uiSchema.showTitle,
+          showTitle = _uiSchema$showTitle === undefined ? true : _uiSchema$showTitle;
       var title = schema.title;
       var _state = this.state,
           _state$lat = _state.lat,
@@ -469,7 +471,7 @@ var GeolocationField = function (_PureComponent) {
       return React__default.createElement(
         Row,
         { className: 'row' },
-        React__default.createElement(
+        showTitle ? React__default.createElement(
           'div',
           { className: 'col-xs-12' },
           React__default.createElement(
@@ -477,7 +479,7 @@ var GeolocationField = function (_PureComponent) {
             { htmlFor: latId },
             title || name
           )
-        ),
+        ) : '',
         React__default.createElement(
           'div',
           { className: 'col-xs-12 col-sm-6' },

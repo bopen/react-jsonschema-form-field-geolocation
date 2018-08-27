@@ -91,6 +91,7 @@ By providing the (optional) `uiSchema` prop you can customize the widget:
 * `height` - the map height. Setting an height is required by OpenLayers (with this props, or by CSS)
 * `geocoder` settings passed to the `ol-geocoder` instance.
   Default value (see [documentation](https://github.com/jonataswalker/ol-geocoder#new-geocodertype-options) for options defails):
+* `showTitle` - default to `true`. Display the field title; default value is commonly OK, but you could like to disable it when using [custom field template](https://github.com/mozilla-services/react-jsonschema-form/#field-template)
 
   ```javascript
     {

@@ -63,16 +63,18 @@ export default class GeolocationField extends PureComponent {
 
   render() {
     const { schema, uiSchema, name } = this.props
-    const { zoom, defaultLocation, height } = uiSchema
+    const { zoom, defaultLocation, height, showTitle = true } = uiSchema
     const { title } = schema
     let { lat = '', lng = '' } = this.state
     const latId = `${name}_lat`
     const lngId = `${name}_lng`
     return (
       <Row className='row'>
-        <div className='col-xs-12'>
-          <label htmlFor={latId}>{title || name}</label>
-        </div>
+        {showTitle ? (
+          <div className='col-xs-12'>
+            <label htmlFor={latId}>{title || name}</label>
+          </div>
+        ) : ''}
         <div className='col-xs-12 col-sm-6'>
           <div className='input-group'>
             <span className='input-group-addon' id={latId}>
