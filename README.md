@@ -18,6 +18,13 @@ You also need to install a bunch on peer dependencies:
 * [ol-geocoder](https://www.npmjs.com/package/ol-geocoder)
 * [styled-components](https://www.npmjs.com/package/styled-components)
 
+Plus: you must include required CSS from both *ol* and *ol-geocoder* packages:
+
+```javascript
+import 'ol/ol.css'
+import 'ol-geocoder/dist/ol-geocoder.min.css'
+```
+
 ## Usage
 
 ### Integrating in the `Form`
@@ -27,7 +34,7 @@ Adding new fields to the default JSON schema set requires to use the `fields` pr
 ```jsx
 import React, { Component } from 'react'
 import Form from 'react-jsonschema-form';
-import fields from 'react-jsonschema-form-field-geolocation';
+import GeolocationField from 'react-jsonschema-form-field-geolocation';
 
 const schema = {
   title: 'Geolocation example',
@@ -60,7 +67,7 @@ class App extends Component {
   render () {
     return (
       <Form
-        fields={fields}
+        fields={{geolocation: GeolocationField}}
         schema={schema}
         uiSchema={uiSchema}
       />

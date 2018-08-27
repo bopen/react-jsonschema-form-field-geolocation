@@ -29,9 +29,12 @@ export default class GeolocationField extends PureComponent {
   }
 
   handleUpdateCoords = ({ lat, lng }) => {
-    this.setState({
-      lat,
-      lng,
+    this.setState(oldState => {
+      this.props.onChange({ ...oldState, ...{ lat, lng } })
+      return {
+        lat,
+        lng,
+      }
     })
   }
 

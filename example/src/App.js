@@ -8,7 +8,7 @@ import 'ol-geocoder/dist/ol-geocoder.min.css'
 const schema = {
   title: 'Geolocation example',
   type: 'object',
-  required: ['title'],
+  required: ['title', 'position'],
   properties: {
     title: { type: 'string', title: 'Title', default: 'A new task' },
     done: { type: 'boolean', title: 'Done?', default: false },
@@ -74,6 +74,7 @@ class App extends Component {
           schema={schema}
           formData={this.state.formData}
           uiSchema={uiSchema}
+          noHtml5Validate
           onChange={this.log('change')}
           onSubmit={this.log('submit')}
           onError={this.log('errors')}

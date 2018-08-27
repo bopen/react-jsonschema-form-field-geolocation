@@ -405,9 +405,12 @@ var GeolocationField = function (_PureComponent) {
       var lat = _ref.lat,
           lng = _ref.lng;
 
-      _this.setState({
-        lat: lat,
-        lng: lng
+      _this.setState(function (oldState) {
+        _this.props.onChange(_extends({}, oldState, { lat: lat, lng: lng }));
+        return {
+          lat: lat,
+          lng: lng
+        };
       });
     };
 
