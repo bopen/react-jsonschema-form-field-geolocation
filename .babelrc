@@ -7,9 +7,7 @@
     "react"
   ],
   "plugins": [
-    "external-helpers",
-    "syntax-dynamic-import",
-    "babel-plugin-dynamic-import-node"
+    "external-helpers"
   ],
   "env": {
     "test": {
