@@ -190,7 +190,7 @@ var toConsumableArray = function (arr) {
 var _templateObject = taggedTemplateLiteral(['\n  margin-top: 1em;\n  margin-bottom: 1em;\n  height: ', ';\n  overflow-y: hidden;\n  // box-shadow: 0px 30px 40px rgba(0,0,0,.1);\n'], ['\n  margin-top: 1em;\n  margin-bottom: 1em;\n  height: ', ';\n  overflow-y: hidden;\n  // box-shadow: 0px 30px 40px rgba(0,0,0,.1);\n']),
     _templateObject2 = taggedTemplateLiteral(['\n  display: block;\n  width: 100%;\n  border: 0;\n  margin: 0;\n  padding: 0;\n  height: ', ';\n  background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 1));\n  cursor: s-resize;\n'], ['\n  display: block;\n  width: 100%;\n  border: 0;\n  margin: 0;\n  padding: 0;\n  height: ', ';\n  background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 1));\n  cursor: s-resize;\n']),
     _templateObject3 = taggedTemplateLiteral(['\n  cursor: n-resize;\n  bottom: 0;\n  height: ', ';\n  position: absolute;\n'], ['\n  cursor: n-resize;\n  bottom: 0;\n  height: ', ';\n  position: absolute;\n']),
-    _templateObject4 = taggedTemplateLiteral(['\n  height: 60vh;\n  cursor: pointer;\n  position: relative\n  top: ', ';\n  ', '\n'], ['\n  height: 60vh;\n  cursor: pointer;\n  position: relative\n  top: ', ';\n  ', '\n']);
+    _templateObject4 = taggedTemplateLiteral(['\n  height: ', ';\n  cursor: pointer;\n  position: relative\n  top: ', ';\n  ', '\n'], ['\n  height: ', ';\n  cursor: pointer;\n  position: relative\n  top: ', ';\n  ', '\n']);
 
 var zoomslider = new ZoomSlider();
 
@@ -223,6 +223,8 @@ var MapClose = MapCover.extend(_templateObject3, function (props) {
 });
 
 var MapArea = styled.div(_templateObject4, function (props) {
+  return props.height;
+}, function (props) {
   return props.expanded ? '0' : '-' + CLOSED_MAP_H + 'px';
 }, function (props) {
   return props.expanded ? '' : 'z-index: -1;';
@@ -299,16 +301,7 @@ var MapSelection = function (_PureComponent) {
       _this.map.getView().setCenter(proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857'));
     };
 
-    _this.geocoder = new Geocoder('nominatim', {
-      provider: 'osm',
-      placeholder: 'Search for ...',
-      targetType: 'glass-button',
-      limit: 5,
-      keepOpen: false,
-      autoComplete: true,
-      autoCompleteMinLength: 4,
-      preventDefault: true
-    });
+    _this.geocoder = new Geocoder('nominatim', props.geocoder);
     _this.vectorSource = new VectorSource({
       // create empty vector
     });
@@ -326,12 +319,13 @@ var MapSelection = function (_PureComponent) {
     key: 'render',
     value: function render() {
       var mapExpanded = this.state.mapExpanded;
+      var height = this.props.height;
 
       return React__default.createElement(
         MapContainer,
         { expanded: mapExpanded },
         mapExpanded ? '' : React__default.createElement(MapCover, { title: 'Expand map', onClick: this.handleMap }),
-        React__default.createElement(MapArea, { id: this.id, expanded: mapExpanded }),
+        React__default.createElement(MapArea, { id: this.id, height: height, expanded: mapExpanded }),
         mapExpanded ? React__default.createElement(MapClose, { title: 'Collpase map', onClick: this.handleMap }) : ''
       );
     }
@@ -375,10 +369,24 @@ MapSelection.propTypes = {
   onUpdateCoords: PropTypes.func,
   lat: PropTypes.number,
   lng: PropTypes.number,
-  zoom: PropTypes.number.isRequired
+  zoom: PropTypes.number,
+  height: PropTypes.string,
+  geocoder: PropTypes.object
 };
 MapSelection.defaultProps = {
-  onUpdateCoords: nop
+  onUpdateCoords: nop,
+  zoom: 4,
+  height: '60vh',
+  geocoder: {
+    provider: 'osm',
+    placeholder: 'Search for ...',
+    targetType: 'glass-button',
+    limit: 5,
+    keepOpen: false,
+    autoComplete: true,
+    autoCompleteMinLength: 4,
+    preventDefault: true
+  }
 };
 
 var _templateObject$1 = taggedTemplateLiteral(['\n  .input-group-addon {\n    min-width: 8em;\n  }\n'], ['\n  .input-group-addon {\n    min-width: 8em;\n  }\n']);
@@ -446,7 +454,9 @@ var GeolocationField = function (_PureComponent) {
           schema = _props.schema,
           uiSchema = _props.uiSchema,
           name = _props.name;
-      var zoom = uiSchema.zoom;
+      var zoom = uiSchema.zoom,
+          defaultLocation = uiSchema.defaultLocation,
+          height = uiSchema.height;
       var title = schema.title;
       var _state = this.state,
           _state$lat = _state.lat,
@@ -520,8 +530,9 @@ var GeolocationField = function (_PureComponent) {
               return _this3.map = map;
             },
             name: name,
-            lat: lat,
-            lng: lng,
+            lat: lat || defaultLocation.lat,
+            lng: lng || defaultLocation.lng,
+            height: height,
             zoom: zoom,
             onUpdateCoords: this.handleUpdateCoords
           })
@@ -543,9 +554,5 @@ GeolocationField.defaultProps = {
   onChange: function onChange() {}
 };
 
-var index = {
-  geolocation: GeolocationField
-};
-
-module.exports = index;
+module.exports = GeolocationField;
 //# sourceMappingURL=index.js.map

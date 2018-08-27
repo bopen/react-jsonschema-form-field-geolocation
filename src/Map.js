@@ -64,7 +64,7 @@ const MapClose = MapCover.extend`
 `
 
 const MapArea = styled.div`
-  height: 60vh;
+  height: ${props => props.height};
   cursor: pointer;
   position: relative
   top: ${props => (props.expanded ? '0' : `-${CLOSED_MAP_H}px`)};
@@ -79,20 +79,16 @@ class MapSelection extends PureComponent {
     onUpdateCoords: PropTypes.func,
     lat: PropTypes.number,
     lng: PropTypes.number,
-    zoom: PropTypes.number.isRequired,
+    zoom: PropTypes.number,
+    height: PropTypes.string,
+    geocoder: PropTypes.object,
   }
 
   static defaultProps = {
     onUpdateCoords: nop,
-  }
-
-  state = {
-    mapExpanded: false,
-  }
-
-  constructor(props) {
-    super(props)
-    this.geocoder = new Geocoder('nominatim', {
+    zoom: 4,
+    height: '60vh',
+    geocoder: {
       provider: 'osm',
       placeholder: 'Search for ...',
       targetType: 'glass-button',
@@ -101,7 +97,16 @@ class MapSelection extends PureComponent {
       autoComplete: true,
       autoCompleteMinLength: 4,
       preventDefault: true,
-    })
+    },
+  }
+
+  state = {
+    mapExpanded: false,
+  }
+
+  constructor(props) {
+    super(props)
+    this.geocoder = new Geocoder('nominatim', props.geocoder)
     this.vectorSource = new VectorSource({
       // create empty vector
     })
@@ -154,10 +159,11 @@ class MapSelection extends PureComponent {
 
   render() {
     const { mapExpanded } = this.state
+    const { height } = this.props
     return (
       <MapContainer expanded={mapExpanded}>
         {mapExpanded ? '' : <MapCover title='Expand map' onClick={this.handleMap} />}
-        <MapArea id={this.id} expanded={mapExpanded} />
+        <MapArea id={this.id} height={height} expanded={mapExpanded} />
         {mapExpanded ? <MapClose title='Collpase map' onClick={this.handleMap} /> : ''}
       </MapContainer>
     )

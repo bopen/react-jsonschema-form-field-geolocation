@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Form from 'react-jsonschema-form';
-import fields from 'react-jsonschema-form-field-geolocation';
+import GeolocationField from 'react-jsonschema-form-field-geolocation';
 
 import 'ol/ol.css'
 import 'ol-geocoder/dist/ol-geocoder.min.css'
@@ -28,6 +28,11 @@ const uiSchema = {
   position: {
     'ui:field': 'geolocation',
     zoom: 7,
+    defaultLocation: {
+      lat: 51.50853,
+      lng: -0.076132
+    },
+    height: '40vh',
   }
 };
 
@@ -65,7 +70,7 @@ class App extends Component {
     return (
       <main>
         <Form
-          fields={fields}
+          fields={{geolocation: GeolocationField}}
           schema={schema}
           formData={this.state.formData}
           uiSchema={uiSchema}

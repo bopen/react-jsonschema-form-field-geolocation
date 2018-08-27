@@ -1,0 +1,13 @@
+node_modules
+
+# builds
+build
+example
+
+# misc
+.DS_Store
+*.gif
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

@@ -63,9 +63,9 @@ export default class GeolocationField extends PureComponent {
 
   render() {
     const { schema, uiSchema, name } = this.props
-    const { zoom } = uiSchema
+    const { zoom, defaultLocation, height } = uiSchema
     const { title } = schema
-    const { lat = '', lng = '' } = this.state
+    let { lat = '', lng = '' } = this.state
     const latId = `${name}_lat`
     const lngId = `${name}_lng`
     return (
@@ -109,8 +109,9 @@ export default class GeolocationField extends PureComponent {
           <Map
             ref={map => (this.map = map)}
             name={name}
-            lat={lat}
-            lng={lng}
+            lat={lat || defaultLocation.lat}
+            lng={lng || defaultLocation.lng}
+            height={height}
             zoom={zoom}
             onUpdateCoords={this.handleUpdateCoords}
           />

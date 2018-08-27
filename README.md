@@ -4,6 +4,8 @@
 
 [![NPM](https://img.shields.io/npm/v/react-jsonschema-form-field-geolocation.svg)](https://www.npmjs.com/package/react-jsonschema-form-field-geolocation) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
+![react-jsonschema-form-field-geolocation Demo](https://raw.githubusercontent.com/bopen/react-jsonschema-form-field-geolocation/master/react-jsonschema-form-field-geolocation.gif)
+
 ## Install
 
 ```bash
@@ -26,6 +28,33 @@ Adding new fields to the default JSON schema set requires to use the `fields` pr
 import React, { Component } from 'react'
 import Form from 'react-jsonschema-form';
 import fields from 'react-jsonschema-form-field-geolocation';
+
+const schema = {
+  title: 'Geolocation example',
+  type: 'object',
+  properties: {
+    position: {
+      type: 'object',
+      title: 'Position',
+      required: ['lat', 'lng'],
+      properties: {
+        lat: { type: 'number', title: 'Latitude' },
+        lng: { type: 'number', title: 'Longitude' }
+      }
+    }
+  }
+};
+
+const uiSchema = {
+  position: {
+    'ui:field': 'geolocation',
+    zoom: 7,
+    defaultLocation: {
+      lat: 51.50853,
+      lng: -0.076132
+    }
+  }
+};
 
 class App extends Component {
   render () {
@@ -51,6 +80,30 @@ let fields = Object.assign({}, geofields, otherFields);
 ```
 
 See ["Custom field components" documentation](https://github.com/mozilla-services/react-jsonschema-form#custom-field-components) for more.
+
+### Customization
+
+By providing the (optional) `uiSchema` prop you can customize the widget:
+
+* `zoom` - the default zoom to start from (default is 4)
+* `defaultLocation` - a *lat*/*lng* object used for the default map location.
+  This is not required if you provide a form value using the standard `formData` object, but you should provide a default map location to display.
+* `height` - the map height. Setting an height is required by OpenLayers (with this props, or by CSS)
+* `geocoder` settings passed to the `ol-geocoder` instance.
+  Default value (see [documentation](https://github.com/jonataswalker/ol-geocoder#new-geocodertype-options) for options defails):
+
+  ```javascript
+    {
+      provider: 'osm',
+      placeholder: 'Search for ...',
+      targetType: 'glass-button',
+      limit: 5,
+      keepOpen: false,
+      autoComplete: true,
+      autoCompleteMinLength: 4,
+      preventDefault: true,
+    }
+  ```
 
 ## License
 
