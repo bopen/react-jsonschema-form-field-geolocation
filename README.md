@@ -6,6 +6,8 @@
 
 ![react-jsonschema-form-field-geolocation Demo](https://raw.githubusercontent.com/bopen/react-jsonschema-form-field-geolocation/master/react-jsonschema-form-field-geolocation.gif)
 
+See demo at https://bopen.github.io/react-jsonschema-form-field-geolocation.
+
 ## Install
 
 ```bash
@@ -114,5 +116,7 @@ By providing the (optional) `uiSchema` prop you can customize the widget:
   ```
 
 ## License
+
+![B-Open Solutions](http://www.bopen.it/wp-content/uploads/2016/01/logo-no-back.png)
 
 MIT © [bopen](https://github.com/bopen)
