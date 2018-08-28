@@ -17,8 +17,8 @@ const schema = {
       title: 'Position',
       required: ['lat', 'lng'],
       properties: {
-        lat: { type: 'number', title: 'Latitude' },
-        lng: { type: 'number', title: 'Longitude' }
+        lat: { type: 'number', title: 'Latitude', default: 51.50854 },
+        lng: { type: 'number', title: 'Longitude', default: -0.076133 }
       }
     }
   }
@@ -38,10 +38,10 @@ const uiSchema = {
 
 const formData = {
   title: 'Welcome!',
-  position: {
-    lat: 51.50853,
-    lng: -0.076132
-  }
+  // position: {
+  //   lat: 51.50853,
+  //   lng: -0.076132
+  // }
 };
 
 class App extends Component {

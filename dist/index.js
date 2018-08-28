@@ -469,6 +469,10 @@ var GeolocationField = function (_PureComponent) {
           _state$lng = _state.lng,
           lng = _state$lng === undefined ? '' : _state$lng;
 
+      if (lat === '' && lng === '' && schema.default) {
+        lat = schema.default.lat;
+        lng = schema.default.lng;
+      }
       var latId = name + '_lat';
       var lngId = name + '_lng';
       return React__default.createElement(

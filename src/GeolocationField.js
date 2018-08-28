@@ -50,7 +50,9 @@ export default class GeolocationField extends PureComponent {
     return event => {
       const rawValue = event.target.value
       this.setState(oldState => {
-        const [nextVal, invalid] = [...computeValue(rawValue, oldState[name], name)]
+        const [nextVal, invalid] = [
+          ...computeValue(rawValue, oldState[name], name),
+        ]
         if (nextVal === oldState[name]) {
           return null
         }
@@ -69,6 +71,10 @@ export default class GeolocationField extends PureComponent {
     const { zoom, defaultLocation, height, showTitle = true } = uiSchema
     const { title } = schema
     let { lat = '', lng = '' } = this.state
+    if (lat === '' && lng === '' && schema.default) {
+      lat = schema.default.lat
+      lng = schema.default.lng
+    }
     const latId = `${name}_lat`
     const lngId = `${name}_lng`
     return (
@@ -77,7 +83,9 @@ export default class GeolocationField extends PureComponent {
           <div className='col-xs-12'>
             <label htmlFor={latId}>{title || name}</label>
           </div>
-        ) : ''}
+        ) : (
+          ''
+        )}
         <div className='col-xs-12 col-sm-6'>
           <div className='input-group'>
             <span className='input-group-addon' id={latId}>
