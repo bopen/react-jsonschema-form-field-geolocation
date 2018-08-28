@@ -13,7 +13,7 @@ const Row = styled.div`
 export default class GeolocationField extends PureComponent {
   static propTypes = {
     formData: PropTypes.object,
-    schema: PropTypes.object,
+    schema: PropTypes.object.isRequired,
     uiSchema: PropTypes.object,
     onChange: PropTypes.func,
     name: PropTypes.string.isRequired,
@@ -25,7 +25,13 @@ export default class GeolocationField extends PureComponent {
 
   constructor(props) {
     super(props)
-    this.state = { ...props.formData }
+    const { schema } = props
+    let { lat = '', lng = '' } = props.formData
+    if (lat === '' && lng === '' && schema.default) {
+      lat = schema.default.lat
+      lng = schema.default.lng
+    }
+    this.state = { lat, lng }
   }
 
   handleUpdateCoords = ({ lat, lng }) => {
@@ -69,12 +75,10 @@ export default class GeolocationField extends PureComponent {
   render() {
     const { schema, uiSchema, name } = this.props
     const { zoom, defaultLocation, height, showTitle = true } = uiSchema
-    const { title } = schema
-    let { lat = '', lng = '' } = this.state
-    if (lat === '' && lng === '' && schema.default) {
-      lat = schema.default.lat
-      lng = schema.default.lng
-    }
+    const { title, properties = {} } = schema
+    const latInfo = properties.lat || {}
+    const lngInfo = properties.lng || {}
+    const { lat, lng } = this.state
     const latId = `${name}_lat`
     const lngId = `${name}_lng`
     return (
@@ -89,9 +93,10 @@ export default class GeolocationField extends PureComponent {
         <div className='col-xs-12 col-sm-6'>
           <div className='input-group'>
             <span className='input-group-addon' id={latId}>
-              Latitude
+              {latInfo.title || 'Latitude'}
             </span>
             <input
+              autoComplete='off'
               className='form-control'
               aria-describedby={latId}
               type='text'
@@ -105,9 +110,10 @@ export default class GeolocationField extends PureComponent {
         <div className='col-xs-12 col-sm-6'>
           <div className='input-group'>
             <span className='input-group-addon' id={lngId}>
-              Longitude
+              {lngInfo.title || 'Longitude'}
             </span>
             <input
+              autoComplete='off'
               className='form-control'
               aria-describedby={lngId}
               type='text'

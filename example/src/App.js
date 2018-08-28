@@ -17,8 +17,8 @@ const schema = {
       title: 'Position',
       required: ['lat', 'lng'],
       properties: {
-        lat: { type: 'number', title: 'Latitude', default: 51.50854 },
-        lng: { type: 'number', title: 'Longitude', default: -0.076133 }
+        lat: { type: 'number', title: 'Atlantis latitude', default: 51.50854 },
+        lng: { type: 'number', title: 'Atlantis longitude', default: -0.076133 }
       }
     }
   }

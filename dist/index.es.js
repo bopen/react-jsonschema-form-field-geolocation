@@ -396,28 +396,20 @@ var GeolocationField = function (_PureComponent) {
 
     var _this = possibleConstructorReturn(this, (GeolocationField.__proto__ || Object.getPrototypeOf(GeolocationField)).call(this, props));
 
-    _this.handleUpdateCoords = function (_ref) {
-      var lat = _ref.lat,
-          lng = _ref.lng;
+    _initialiseProps.call(_this);
 
-      _this.setState(function (oldState) {
-        _this.props.onChange(_extends({}, oldState, { lat: lat, lng: lng }));
-        return {
-          lat: lat,
-          lng: lng
-        };
-      });
-    };
+    var schema = props.schema;
+    var _props$formData = props.formData,
+        _props$formData$lat = _props$formData.lat,
+        lat = _props$formData$lat === undefined ? '' : _props$formData$lat,
+        _props$formData$lng = _props$formData.lng,
+        lng = _props$formData$lng === undefined ? '' : _props$formData$lng;
 
-    _this.handleKeyPress = function (evt) {
-      if (evt.key === 'Enter') {
-        _this.map.centerMap();
-        evt.preventDefault();
-        evt.stopPropagation();
-      }
-    };
-
-    _this.state = _extends({}, props.formData);
+    if (lat === '' && lng === '' && schema.default) {
+      lat = schema.default.lat;
+      lng = schema.default.lng;
+    }
+    _this.state = { lat: lat, lng: lng };
     return _this;
   }
 
@@ -429,9 +421,9 @@ var GeolocationField = function (_PureComponent) {
       return function (event) {
         var rawValue = event.target.value;
         _this2.setState(function (oldState) {
-          var _ref2 = [].concat(toConsumableArray(computeValue(rawValue, oldState[name], name))),
-              nextVal = _ref2[0],
-              invalid = _ref2[1];
+          var _ref = [].concat(toConsumableArray(computeValue(rawValue, oldState[name], name))),
+              nextVal = _ref[0],
+              invalid = _ref[1];
 
           if (nextVal === oldState[name]) {
             return null;
@@ -457,17 +449,16 @@ var GeolocationField = function (_PureComponent) {
           height = uiSchema.height,
           _uiSchema$showTitle = uiSchema.showTitle,
           showTitle = _uiSchema$showTitle === undefined ? true : _uiSchema$showTitle;
-      var title = schema.title;
-      var _state = this.state,
-          _state$lat = _state.lat,
-          lat = _state$lat === undefined ? '' : _state$lat,
-          _state$lng = _state.lng,
-          lng = _state$lng === undefined ? '' : _state$lng;
+      var title = schema.title,
+          _schema$properties = schema.properties,
+          properties = _schema$properties === undefined ? {} : _schema$properties;
 
-      if (lat === '' && lng === '' && schema.default) {
-        lat = schema.default.lat;
-        lng = schema.default.lng;
-      }
+      var latInfo = properties.lat || {};
+      var lngInfo = properties.lng || {};
+      var _state = this.state,
+          lat = _state.lat,
+          lng = _state.lng;
+
       var latId = name + '_lat';
       var lngId = name + '_lng';
       return React.createElement(
@@ -491,9 +482,10 @@ var GeolocationField = function (_PureComponent) {
             React.createElement(
               'span',
               { className: 'input-group-addon', id: latId },
-              'Latitude'
+              latInfo.title || 'Latitude'
             ),
             React.createElement('input', {
+              autoComplete: 'off',
               className: 'form-control',
               'aria-describedby': latId,
               type: 'text',
@@ -513,9 +505,10 @@ var GeolocationField = function (_PureComponent) {
             React.createElement(
               'span',
               { className: 'input-group-addon', id: lngId },
-              'Longitude'
+              lngInfo.title || 'Longitude'
             ),
             React.createElement('input', {
+              autoComplete: 'off',
               className: 'form-control',
               'aria-describedby': lngId,
               type: 'text',
@@ -549,13 +542,38 @@ var GeolocationField = function (_PureComponent) {
 
 GeolocationField.propTypes = {
   formData: PropTypes.object,
-  schema: PropTypes.object,
+  schema: PropTypes.object.isRequired,
   uiSchema: PropTypes.object,
   onChange: PropTypes.func,
   name: PropTypes.string.isRequired
 };
 GeolocationField.defaultProps = {
   onChange: function onChange() {}
+};
+
+var _initialiseProps = function _initialiseProps() {
+  var _this4 = this;
+
+  this.handleUpdateCoords = function (_ref3) {
+    var lat = _ref3.lat,
+        lng = _ref3.lng;
+
+    _this4.setState(function (oldState) {
+      _this4.props.onChange(_extends({}, oldState, { lat: lat, lng: lng }));
+      return {
+        lat: lat,
+        lng: lng
+      };
+    });
+  };
+
+  this.handleKeyPress = function (evt) {
+    if (evt.key === 'Enter') {
+      _this4.map.centerMap();
+      evt.preventDefault();
+      evt.stopPropagation();
+    }
+  };
 };
 
 export default GeolocationField;
