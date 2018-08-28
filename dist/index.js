@@ -284,7 +284,7 @@ var MapSelection = function (_PureComponent) {
           lat = _this$props.lat,
           lng = _this$props.lng;
 
-      if (!lat && !lng) {
+      if (lat === '' && lng === '') {
         return;
       }
       _this.vectorSource.clear();
@@ -370,8 +370,8 @@ var MapSelection = function (_PureComponent) {
 MapSelection.propTypes = {
   name: PropTypes.string.isRequired,
   onUpdateCoords: PropTypes.func,
-  lat: PropTypes.number,
-  lng: PropTypes.number,
+  lat: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  lng: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   centerLat: PropTypes.number,
   centerLng: PropTypes.number,
   zoom: PropTypes.number,
@@ -398,29 +398,52 @@ var _templateObject$1 = taggedTemplateLiteral(['\n  .input-group-addon {\n    mi
 
 var Row = styled.div(_templateObject$1);
 
+var getDefaults = function getDefaults(schema) {
+  var defaults$$1 = {};
+  var values = ['lat', 'lng'];
+  values.forEach(function (v) {
+    if (schema.properties && schema.properties[v] !== undefined && schema.properties[v].default) {
+      defaults$$1[v] = schema.properties[v].default;
+    }
+  });
+  return defaults$$1;
+};
+
 var GeolocationField = function (_PureComponent) {
   inherits(GeolocationField, _PureComponent);
 
-  function GeolocationField(props) {
+  function GeolocationField() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
     classCallCheck(this, GeolocationField);
 
-    var _this = possibleConstructorReturn(this, (GeolocationField.__proto__ || Object.getPrototypeOf(GeolocationField)).call(this, props));
-
-    _initialiseProps.call(_this);
-
-    var schema = props.schema;
-    var _props$formData = props.formData,
-        _props$formData$lat = _props$formData.lat,
-        lat = _props$formData$lat === undefined ? '' : _props$formData$lat,
-        _props$formData$lng = _props$formData.lng,
-        lng = _props$formData$lng === undefined ? '' : _props$formData$lng;
-
-    if (lat === '' && lng === '' && schema.default) {
-      lat = schema.default.lat;
-      lng = schema.default.lng;
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
     }
-    _this.state = { lat: lat, lng: lng };
-    return _this;
+
+    return _ret = (_temp = (_this = possibleConstructorReturn(this, (_ref = GeolocationField.__proto__ || Object.getPrototypeOf(GeolocationField)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+      lat: null,
+      lng: null
+    }, _this.handleUpdateCoords = function (_ref2) {
+      var lat = _ref2.lat,
+          lng = _ref2.lng;
+
+      _this.setState(function (oldState) {
+        _this.props.onChange(_extends({}, oldState, { lat: lat, lng: lng }));
+        return {
+          lat: lat,
+          lng: lng
+        };
+      });
+    }, _this.handleKeyPress = function (evt) {
+      if (evt.key === 'Enter') {
+        _this.map.centerMap();
+        evt.preventDefault();
+        evt.stopPropagation();
+      }
+    }, _temp), possibleConstructorReturn(_this, _ret);
   }
 
   createClass(GeolocationField, [{
@@ -431,9 +454,9 @@ var GeolocationField = function (_PureComponent) {
       return function (event) {
         var rawValue = event.target.value;
         _this2.setState(function (oldState) {
-          var _ref = [].concat(toConsumableArray(computeValue(rawValue, oldState[name], name))),
-              nextVal = _ref[0],
-              invalid = _ref[1];
+          var _ref3 = [].concat(toConsumableArray(computeValue(rawValue, oldState[name], name))),
+              nextVal = _ref3[0],
+              invalid = _ref3[1];
 
           if (nextVal === oldState[name]) {
             return null;
@@ -548,6 +571,25 @@ var GeolocationField = function (_PureComponent) {
         )
       );
     }
+  }], [{
+    key: 'getDerivedStateFromProps',
+    value: function getDerivedStateFromProps(props, state) {
+      var schema = props.schema;
+      var _props$formData = props.formData,
+          _props$formData$lat = _props$formData.lat,
+          lat = _props$formData$lat === undefined ? '' : _props$formData$lat,
+          _props$formData$lng = _props$formData.lng,
+          lng = _props$formData$lng === undefined ? '' : _props$formData$lng;
+
+      var defaults$$1 = getDefaults(schema);
+      if (lat === '' && defaults$$1.lat !== undefined) {
+        lat = defaults$$1.lat;
+      }
+      if (lng === '' && defaults$$1.lng !== undefined) {
+        lng = defaults$$1.lng;
+      }
+      return { lat: lat, lng: lng };
+    }
   }]);
   return GeolocationField;
 }(React.PureComponent);
@@ -561,31 +603,6 @@ GeolocationField.propTypes = {
 };
 GeolocationField.defaultProps = {
   onChange: function onChange() {}
-};
-
-var _initialiseProps = function _initialiseProps() {
-  var _this4 = this;
-
-  this.handleUpdateCoords = function (_ref3) {
-    var lat = _ref3.lat,
-        lng = _ref3.lng;
-
-    _this4.setState(function (oldState) {
-      _this4.props.onChange(_extends({}, oldState, { lat: lat, lng: lng }));
-      return {
-        lat: lat,
-        lng: lng
-      };
-    });
-  };
-
-  this.handleKeyPress = function (evt) {
-    if (evt.key === 'Enter') {
-      _this4.map.centerMap();
-      evt.preventDefault();
-      evt.stopPropagation();
-    }
-  };
 };
 
 module.exports = GeolocationField;

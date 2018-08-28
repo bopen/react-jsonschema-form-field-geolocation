@@ -10,6 +10,21 @@ const Row = styled.div`
   }
 `
 
+const getDefaults = schema => {
+  const defaults = {}
+  const values = ['lat', 'lng']
+  values.forEach(v => {
+    if (
+      schema.properties &&
+      schema.properties[v] !== undefined &&
+      schema.properties[v].default
+    ) {
+      defaults[v] = schema.properties[v].default
+    }
+  })
+  return defaults
+}
+
 export default class GeolocationField extends PureComponent {
   static propTypes = {
     formData: PropTypes.object,
@@ -23,16 +38,10 @@ export default class GeolocationField extends PureComponent {
     onChange: () => {},
   }
 
-  constructor(props) {
-    super(props)
-    const { schema } = props
-    let { lat = '', lng = '' } = props.formData
-    if (lat === '' && lng === '' && schema.default) {
-      lat = schema.default.lat
-      lng = schema.default.lng
-    }
-    this.state = { lat, lng }
-  }
+  state = {
+    lat: null,
+    lng: null,
+  };
 
   handleUpdateCoords = ({ lat, lng }) => {
     this.setState(oldState => {
@@ -70,6 +79,19 @@ export default class GeolocationField extends PureComponent {
         }
       })
     }
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const { schema } = props
+    let { lat = '', lng = '' } = props.formData
+    const defaults = getDefaults(schema)
+    if (lat === '' && defaults.lat !== undefined) {
+      lat = defaults.lat
+    }
+    if (lng === '' && defaults.lng !== undefined) {
+      lng = defaults.lng
+    }
+    return { lat, lng }
   }
 
   render() {

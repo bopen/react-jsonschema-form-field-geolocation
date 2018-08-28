@@ -77,8 +77,14 @@ class MapSelection extends PureComponent {
   static propTypes = {
     name: PropTypes.string.isRequired,
     onUpdateCoords: PropTypes.func,
-    lat: PropTypes.number,
-    lng: PropTypes.number,
+    lat: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+    ]),
+    lng: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+    ]),
     centerLat: PropTypes.number,
     centerLng: PropTypes.number,
     zoom: PropTypes.number,
@@ -145,7 +151,7 @@ class MapSelection extends PureComponent {
 
   drawPoint = () => {
     const { name, lat, lng } = this.props
-    if (!lat && !lng) {
+    if (lat === '' && lng === '') {
       return
     }
     this.vectorSource.clear()

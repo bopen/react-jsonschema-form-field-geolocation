@@ -10,7 +10,7 @@ const schema = {
   type: 'object',
   required: ['title', 'position'],
   properties: {
-    title: { type: 'string', title: 'Title', default: 'A new task' },
+    title: { type: 'string', title: 'Title', default: 'Hello world' },
     done: { type: 'boolean', title: 'Done?', default: false },
     position: {
       type: 'object',
@@ -39,7 +39,7 @@ const uiSchema = {
 };
 
 const formData = {
-  title: 'Welcome!',
+  // title: 'Welcome!',
   // position: {
   //   lat: 51.50853,
   //   lng: -0.076132
@@ -74,8 +74,8 @@ class App extends Component {
         <Form
           fields={{geolocation: GeolocationField}}
           schema={schema}
-          formData={this.state.formData}
           uiSchema={uiSchema}
+          formData={this.state.formData}
           noHtml5Validate
           onChange={this.log('change')}
           onSubmit={this.log('submit')}
