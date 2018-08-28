@@ -128,8 +128,10 @@ export default class GeolocationField extends PureComponent {
           <Map
             ref={map => (this.map = map)}
             name={name}
-            lat={lat || defaultLocation.lat}
-            lng={lng || defaultLocation.lng}
+            centerLat={lat || defaultLocation.lat}
+            centerLng={lng || defaultLocation.lng}
+            lat={lat}
+            lng={lng}
             height={height}
             zoom={zoom}
             onUpdateCoords={this.handleUpdateCoords}

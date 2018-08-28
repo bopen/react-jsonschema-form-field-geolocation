@@ -19,6 +19,8 @@ const schema = {
       properties: {
         lat: { type: 'number', title: 'Atlantis latitude', default: 51.50854 },
         lng: { type: 'number', title: 'Atlantis longitude', default: -0.076133 }
+        // lat: { type: 'number', title: 'Atlantis latitude' },
+        // lng: { type: 'number', title: 'Atlantis longitude' }
       }
     }
   }

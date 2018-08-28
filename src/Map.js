@@ -79,6 +79,8 @@ class MapSelection extends PureComponent {
     onUpdateCoords: PropTypes.func,
     lat: PropTypes.number,
     lng: PropTypes.number,
+    centerLat: PropTypes.number,
+    centerLng: PropTypes.number,
     zoom: PropTypes.number,
     height: PropTypes.string,
     geocoder: PropTypes.object,
@@ -142,8 +144,11 @@ class MapSelection extends PureComponent {
   }
 
   drawPoint = () => {
-    this.vectorSource.clear()
     const { name, lat, lng } = this.props
+    if (!lat && !lng) {
+      return
+    }
+    this.vectorSource.clear()
     const iconFeature = new Feature({
       geometry: new Point(proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857')),
       name,
@@ -153,8 +158,8 @@ class MapSelection extends PureComponent {
   }
 
   centerMap = () => {
-    const { lat, lng } = this.props
-    this.map.getView().setCenter(proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857'))
+    const { centerLat, centerLng } = this.props
+    this.map.getView().setCenter(proj.transform([centerLng, centerLat], 'EPSG:4326', 'EPSG:3857'))
   }
 
   render() {
@@ -176,7 +181,7 @@ class MapSelection extends PureComponent {
   }
 
   componentDidMount() {
-    const { lat, lng, zoom } = this.props
+    const { centerLat, centerLng, zoom } = this.props
     this.map = new Map({
       target: this.id,
       layers: [
@@ -186,7 +191,7 @@ class MapSelection extends PureComponent {
         this.vectorLayer,
       ],
       view: new View({
-        center: proj.fromLonLat([lng, lat]),
+        center: proj.fromLonLat([centerLng, centerLat]),
         zoom: zoom,
       }),
     })

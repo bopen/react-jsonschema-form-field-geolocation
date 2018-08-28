@@ -274,12 +274,15 @@ var MapSelection = function (_PureComponent) {
     };
 
     _this.drawPoint = function () {
-      _this.vectorSource.clear();
       var _this$props = _this.props,
           name = _this$props.name,
           lat = _this$props.lat,
           lng = _this$props.lng;
 
+      if (!lat && !lng) {
+        return;
+      }
+      _this.vectorSource.clear();
       var iconFeature = new Feature({
         geometry: new Point(transform([lng, lat], 'EPSG:4326', 'EPSG:3857')),
         name: name,
@@ -290,10 +293,10 @@ var MapSelection = function (_PureComponent) {
 
     _this.centerMap = function () {
       var _this$props2 = _this.props,
-          lat = _this$props2.lat,
-          lng = _this$props2.lng;
+          centerLat = _this$props2.centerLat,
+          centerLng = _this$props2.centerLng;
 
-      _this.map.getView().setCenter(transform([lng, lat], 'EPSG:4326', 'EPSG:3857'));
+      _this.map.getView().setCenter(transform([centerLng, centerLat], 'EPSG:4326', 'EPSG:3857'));
     };
 
     _this.geocoder = new Geocoder('nominatim', props.geocoder);
@@ -335,8 +338,8 @@ var MapSelection = function (_PureComponent) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       var _props = this.props,
-          lat = _props.lat,
-          lng = _props.lng,
+          centerLat = _props.centerLat,
+          centerLng = _props.centerLng,
           zoom = _props.zoom;
 
       this.map = new Map({
@@ -345,7 +348,7 @@ var MapSelection = function (_PureComponent) {
           source: new OSM()
         }), this.vectorLayer],
         view: new View({
-          center: fromLonLat([lng, lat]),
+          center: fromLonLat([centerLng, centerLat]),
           zoom: zoom
         })
       });
@@ -364,6 +367,8 @@ MapSelection.propTypes = {
   onUpdateCoords: PropTypes.func,
   lat: PropTypes.number,
   lng: PropTypes.number,
+  centerLat: PropTypes.number,
+  centerLng: PropTypes.number,
   zoom: PropTypes.number,
   height: PropTypes.string,
   geocoder: PropTypes.object
@@ -527,8 +532,10 @@ var GeolocationField = function (_PureComponent) {
               return _this3.map = map;
             },
             name: name,
-            lat: lat || defaultLocation.lat,
-            lng: lng || defaultLocation.lng,
+            centerLat: lat || defaultLocation.lat,
+            centerLng: lng || defaultLocation.lng,
+            lat: lat,
+            lng: lng,
             height: height,
             zoom: zoom,
             onUpdateCoords: this.handleUpdateCoords
