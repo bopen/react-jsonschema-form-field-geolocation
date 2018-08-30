@@ -47,6 +47,311 @@ var computeValue = function computeValue(rawValue, oldValue, coord) {
   return [nextValue, false];
 };
 
+var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+/** Detect free variable `global` from Node.js. */
+var freeGlobal = typeof commonjsGlobal == 'object' && commonjsGlobal && commonjsGlobal.Object === Object && commonjsGlobal;
+
+var _freeGlobal = freeGlobal;
+
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root = _freeGlobal || freeSelf || Function('return this')();
+
+var _root = root;
+
+/** Built-in value references. */
+var Symbol$1 = _root.Symbol;
+
+var _Symbol = Symbol$1;
+
+/**
+ * A specialized version of `_.map` for arrays without support for iteratee
+ * shorthands.
+ *
+ * @private
+ * @param {Array} [array] The array to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Array} Returns the new mapped array.
+ */
+function arrayMap(array, iteratee) {
+  var index = -1,
+      length = array == null ? 0 : array.length,
+      result = Array(length);
+
+  while (++index < length) {
+    result[index] = iteratee(array[index], index, array);
+  }
+  return result;
+}
+
+var _arrayMap = arrayMap;
+
+/**
+ * Checks if `value` is classified as an `Array` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an array, else `false`.
+ * @example
+ *
+ * _.isArray([1, 2, 3]);
+ * // => true
+ *
+ * _.isArray(document.body.children);
+ * // => false
+ *
+ * _.isArray('abc');
+ * // => false
+ *
+ * _.isArray(_.noop);
+ * // => false
+ */
+var isArray = Array.isArray;
+
+var isArray_1 = isArray;
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var nativeObjectToString = objectProto.toString;
+
+/** Built-in value references. */
+var symToStringTag = _Symbol ? _Symbol.toStringTag : undefined;
+
+/**
+ * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the raw `toStringTag`.
+ */
+function getRawTag(value) {
+  var isOwn = hasOwnProperty.call(value, symToStringTag),
+      tag = value[symToStringTag];
+
+  try {
+    value[symToStringTag] = undefined;
+  } catch (e) {}
+
+  var result = nativeObjectToString.call(value);
+  {
+    if (isOwn) {
+      value[symToStringTag] = tag;
+    } else {
+      delete value[symToStringTag];
+    }
+  }
+  return result;
+}
+
+var _getRawTag = getRawTag;
+
+/** Used for built-in method references. */
+var objectProto$1 = Object.prototype;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var nativeObjectToString$1 = objectProto$1.toString;
+
+/**
+ * Converts `value` to a string using `Object.prototype.toString`.
+ *
+ * @private
+ * @param {*} value The value to convert.
+ * @returns {string} Returns the converted string.
+ */
+function objectToString(value) {
+  return nativeObjectToString$1.call(value);
+}
+
+var _objectToString = objectToString;
+
+/** `Object#toString` result references. */
+var nullTag = '[object Null]',
+    undefinedTag = '[object Undefined]';
+
+/** Built-in value references. */
+var symToStringTag$1 = _Symbol ? _Symbol.toStringTag : undefined;
+
+/**
+ * The base implementation of `getTag` without fallbacks for buggy environments.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the `toStringTag`.
+ */
+function baseGetTag(value) {
+  if (value == null) {
+    return value === undefined ? undefinedTag : nullTag;
+  }
+  return (symToStringTag$1 && symToStringTag$1 in Object(value))
+    ? _getRawTag(value)
+    : _objectToString(value);
+}
+
+var _baseGetTag = baseGetTag;
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return value != null && typeof value == 'object';
+}
+
+var isObjectLike_1 = isObjectLike;
+
+/** `Object#toString` result references. */
+var symbolTag = '[object Symbol]';
+
+/**
+ * Checks if `value` is classified as a `Symbol` primitive or object.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
+ * @example
+ *
+ * _.isSymbol(Symbol.iterator);
+ * // => true
+ *
+ * _.isSymbol('abc');
+ * // => false
+ */
+function isSymbol(value) {
+  return typeof value == 'symbol' ||
+    (isObjectLike_1(value) && _baseGetTag(value) == symbolTag);
+}
+
+var isSymbol_1 = isSymbol;
+
+/** Used as references for various `Number` constants. */
+var INFINITY = 1 / 0;
+
+/** Used to convert symbols to primitives and strings. */
+var symbolProto = _Symbol ? _Symbol.prototype : undefined,
+    symbolToString = symbolProto ? symbolProto.toString : undefined;
+
+/**
+ * The base implementation of `_.toString` which doesn't convert nullish
+ * values to empty strings.
+ *
+ * @private
+ * @param {*} value The value to process.
+ * @returns {string} Returns the string.
+ */
+function baseToString(value) {
+  // Exit early for strings to avoid a performance hit in some environments.
+  if (typeof value == 'string') {
+    return value;
+  }
+  if (isArray_1(value)) {
+    // Recursively convert values (susceptible to call stack limits).
+    return _arrayMap(value, baseToString) + '';
+  }
+  if (isSymbol_1(value)) {
+    return symbolToString ? symbolToString.call(value) : '';
+  }
+  var result = (value + '');
+  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
+}
+
+var _baseToString = baseToString;
+
+/**
+ * Converts `value` to a string. An empty string is returned for `null`
+ * and `undefined` values. The sign of `-0` is preserved.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to convert.
+ * @returns {string} Returns the converted string.
+ * @example
+ *
+ * _.toString(null);
+ * // => ''
+ *
+ * _.toString(-0);
+ * // => '-0'
+ *
+ * _.toString([1, 2, 3]);
+ * // => '1,2,3'
+ */
+function toString(value) {
+  return value == null ? '' : _baseToString(value);
+}
+
+var toString_1 = toString;
+
+/** Used to generate unique IDs. */
+var idCounter = 0;
+
+/**
+ * Generates a unique ID. If `prefix` is given, the ID is appended to it.
+ *
+ * @static
+ * @since 0.1.0
+ * @memberOf _
+ * @category Util
+ * @param {string} [prefix=''] The value to prefix the ID with.
+ * @returns {string} Returns the unique ID.
+ * @example
+ *
+ * _.uniqueId('contact_');
+ * // => 'contact_104'
+ *
+ * _.uniqueId();
+ * // => '105'
+ */
+function uniqueId(prefix) {
+  var id = ++idCounter;
+  return toString_1(prefix) + id;
+}
+
+var uniqueid = uniqueId;
+
 var img = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%20%20%20%20%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h24v24H0V0z%22%2F%3E%20%20%20%20%3Cpath%20d%3D%22M12%202C8.14%202%205%205.14%205%209c0%205.25%207%2013%207%2013s7-7.75%207-13c0-3.86-3.14-7-7-7zm4%208h-3v3h-2v-3H8V8h3V5h2v3h3v2z%22%2F%3E%3C%2Fsvg%3E";
 
 var classCallCheck = function (instance, Constructor) {
@@ -183,8 +488,8 @@ var toConsumableArray = function (arr) {
 };
 
 var _templateObject = taggedTemplateLiteral(['\n  margin-top: 1em;\n  margin-bottom: 1em;\n  height: ', ';\n  overflow-y: hidden;\n  // box-shadow: 0px 30px 40px rgba(0,0,0,.1);\n'], ['\n  margin-top: 1em;\n  margin-bottom: 1em;\n  height: ', ';\n  overflow-y: hidden;\n  // box-shadow: 0px 30px 40px rgba(0,0,0,.1);\n']),
-    _templateObject2 = taggedTemplateLiteral(['\n  display: block;\n  width: 100%;\n  border: 0;\n  margin: 0;\n  padding: 0;\n  height: ', ';\n  background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 1));\n  cursor: s-resize;\n'], ['\n  display: block;\n  width: 100%;\n  border: 0;\n  margin: 0;\n  padding: 0;\n  height: ', ';\n  background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 1));\n  cursor: s-resize;\n']),
-    _templateObject3 = taggedTemplateLiteral(['\n  cursor: n-resize;\n  bottom: 0;\n  height: ', ';\n  position: absolute;\n'], ['\n  cursor: n-resize;\n  bottom: 0;\n  height: ', ';\n  position: absolute;\n']),
+    _templateObject2 = taggedTemplateLiteral(['\n  display: block;\n  width: 100%;\n  border: 0;\n  margin: 0;\n  padding: 0;\n  height: ', ';\n  background: linear-gradient(rgba(171, 211, 222, 0.1), rgba(171, 211, 222, 0.9));\n  cursor: s-resize;\n'], ['\n  display: block;\n  width: 100%;\n  border: 0;\n  margin: 0;\n  padding: 0;\n  height: ', ';\n  background: linear-gradient(rgba(171, 211, 222, 0.1), rgba(171, 211, 222, 0.9));\n  cursor: s-resize;\n']),
+    _templateObject3 = taggedTemplateLiteral(['\n  cursor: n-resize;\n  bottom: 0;\n  height: ', ';\n  background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.9));\n  position: absolute;\n'], ['\n  cursor: n-resize;\n  bottom: 0;\n  height: ', ';\n  background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.9));\n  position: absolute;\n']),
     _templateObject4 = taggedTemplateLiteral(['\n  height: ', ';\n  cursor: pointer;\n  position: relative\n  top: ', ';\n  ', '\n'], ['\n  height: ', ';\n  cursor: pointer;\n  position: relative\n  top: ', ';\n  ', '\n']);
 
 var zoomslider = new ZoomSlider();
@@ -309,7 +614,7 @@ var MapSelection = function (_PureComponent) {
     });
 
     _this.map = null;
-    _this.id = 'map_' + props.name;
+    _this.id = 'map-' + props.name + '-' + uniqueid();
     return _this;
   }
 
@@ -393,16 +698,20 @@ var _templateObject$1 = taggedTemplateLiteral(['\n  .input-group-addon {\n    mi
 
 var Row = styled.div(_templateObject$1);
 
-var getDefaults = function getDefaults(schema) {
-  var defaults$$1 = {};
-  var values = ['lat', 'lng'];
-  values.forEach(function (v) {
-    if (schema.properties && schema.properties[v] !== undefined && schema.properties[v].default) {
-      defaults$$1[v] = schema.properties[v].default;
-    }
-  });
-  return defaults$$1;
-};
+// const getDefaults = schema => {
+//   const defaults = {}
+//   const values = ['lat', 'lng']
+//   values.forEach(v => {
+//     if (
+//       schema.properties &&
+//       schema.properties[v] !== undefined &&
+//       schema.properties[v].default
+//     ) {
+//       defaults[v] = schema.properties[v].default
+//     }
+//   })
+//   return defaults
+// }
 
 var GeolocationField = function (_PureComponent) {
   inherits(GeolocationField, _PureComponent);
@@ -438,6 +747,18 @@ var GeolocationField = function (_PureComponent) {
         evt.preventDefault();
         evt.stopPropagation();
       }
+    }, _this.getErrors = function () {
+      var errorSchema = _this.props.errorSchema;
+
+      var errors = {};
+      Object.entries(errorSchema).forEach(function (_ref3) {
+        var _ref4 = slicedToArray(_ref3, 2),
+            k = _ref4[0],
+            v = _ref4[1];
+
+        errors[k] = v.__errors;
+      });
+      return errors;
     }, _temp), possibleConstructorReturn(_this, _ret);
   }
 
@@ -449,19 +770,43 @@ var GeolocationField = function (_PureComponent) {
       return function (event) {
         var rawValue = event.target.value;
         _this2.setState(function (oldState) {
-          var _ref3 = [].concat(toConsumableArray(computeValue(rawValue, oldState[name], name))),
-              nextVal = _ref3[0],
-              invalid = _ref3[1];
+          // eslint-disable-next-line no-unused-vars
+          var _ref5 = [].concat(toConsumableArray(computeValue(rawValue, oldState[name], name))),
+              nextVal = _ref5[0];
 
           if (nextVal === oldState[name]) {
             return null;
           }
-          if (!invalid) {
-            _this2.props.onChange(_extends({}, oldState, defineProperty({}, name, nextVal)));
-          }
+          // if (!invalid) {
+          //   this.props.onChange({ ...oldState, ...{ [name]: nextVal } })
+          // }
+          _this2.props.onChange(_extends({}, oldState, defineProperty({}, name, nextVal)));
           return defineProperty({}, name, nextVal);
         });
       };
+    }
+  }, {
+    key: 'showErrors',
+    value: function showErrors(errors) {
+      if (!errors || errors.length === 0) {
+        return null;
+      }
+      return React.createElement(
+        'div',
+        null,
+        React.createElement('p', null),
+        React.createElement(
+          'ul',
+          { className: 'error-detail bs-callout bs-callout-info' },
+          errors.map(function (err, index) {
+            return React.createElement(
+              'li',
+              { key: index, className: 'text-danger' },
+              err
+            );
+          })
+        )
+      );
     }
   }, {
     key: 'render',
@@ -471,7 +816,8 @@ var GeolocationField = function (_PureComponent) {
       var _props = this.props,
           schema = _props.schema,
           uiSchema = _props.uiSchema,
-          name = _props.name;
+          name = _props.name,
+          required = _props.required;
       var zoom = uiSchema.zoom,
           defaultLocation = uiSchema.defaultLocation,
           height = uiSchema.height,
@@ -489,6 +835,11 @@ var GeolocationField = function (_PureComponent) {
 
       var latId = name + '_lat';
       var lngId = name + '_lng';
+
+      var errors = this.getErrors();
+      var latClassError = errors.lat ? 'has-error' : '';
+      var lngClassError = errors.lng ? 'has-error' : '';
+
       return React.createElement(
         Row,
         { className: 'row' },
@@ -498,7 +849,12 @@ var GeolocationField = function (_PureComponent) {
           React.createElement(
             'label',
             { htmlFor: latId },
-            title || name
+            title || name,
+            required ? React.createElement(
+              'span',
+              { className: 'required' },
+              '*'
+            ) : ''
           )
         ) : '',
         React.createElement(
@@ -506,7 +862,7 @@ var GeolocationField = function (_PureComponent) {
           { className: 'col-xs-12 col-sm-6' },
           React.createElement(
             'div',
-            { className: 'input-group' },
+            { className: 'input-group ' + latClassError },
             React.createElement(
               'span',
               { className: 'input-group-addon', id: latId },
@@ -522,14 +878,15 @@ var GeolocationField = function (_PureComponent) {
               onKeyPress: this.handleKeyPress,
               onChange: this.onChange('lat')
             })
-          )
+          ),
+          this.showErrors(errors.lat)
         ),
         React.createElement(
           'div',
           { className: 'col-xs-12 col-sm-6' },
           React.createElement(
             'div',
-            { className: 'input-group' },
+            { className: 'input-group ' + lngClassError },
             React.createElement(
               'span',
               { className: 'input-group-addon', id: lngId },
@@ -545,7 +902,8 @@ var GeolocationField = function (_PureComponent) {
               onKeyPress: this.handleKeyPress,
               onChange: this.onChange('lng')
             })
-          )
+          ),
+          this.showErrors(errors.lng)
         ),
         React.createElement(
           'div',
@@ -569,20 +927,20 @@ var GeolocationField = function (_PureComponent) {
   }], [{
     key: 'getDerivedStateFromProps',
     value: function getDerivedStateFromProps(props, state) {
-      var schema = props.schema;
+      // const { schema } = props
       var _props$formData = props.formData,
           _props$formData$lat = _props$formData.lat,
           lat = _props$formData$lat === undefined ? '' : _props$formData$lat,
           _props$formData$lng = _props$formData.lng,
           lng = _props$formData$lng === undefined ? '' : _props$formData$lng;
+      // const defaults = getDefaults(schema)
+      // if (lat === '' && defaults.lat !== undefined) {
+      //   lat = defaults.lat
+      // }
+      // if (lng === '' && defaults.lng !== undefined) {
+      //   lng = defaults.lng
+      // }
 
-      var defaults$$1 = getDefaults(schema);
-      if (lat === '' && defaults$$1.lat !== undefined) {
-        lat = defaults$$1.lat;
-      }
-      if (lng === '' && defaults$$1.lng !== undefined) {
-        lng = defaults$$1.lng;
-      }
       return { lat: lat, lng: lng };
     }
   }]);
@@ -594,10 +952,13 @@ GeolocationField.propTypes = {
   schema: PropTypes.object.isRequired,
   uiSchema: PropTypes.object,
   onChange: PropTypes.func,
-  name: PropTypes.string.isRequired
+  name: PropTypes.string.isRequired,
+  required: PropTypes.bool,
+  errorSchema: PropTypes.object
 };
 GeolocationField.defaultProps = {
-  onChange: function onChange() {}
+  onChange: function onChange() {},
+  required: false
 };
 
 export default GeolocationField;

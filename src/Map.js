@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-
+import uniqueid from 'lodash/uniqueid'
 import Map from 'ol/Map'
 import Tile from 'ol/layer/Tile'
 import VectorLayer from 'ol/layer/Vector'
@@ -52,7 +52,7 @@ const MapCover = styled.button`
   margin: 0;
   padding: 0;
   height: ${props => (props.expanded ? 'auto' : `${CLOSED_MAP_H}px`)};
-  background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 1));
+  background: linear-gradient(rgba(171, 211, 222, 0.1), rgba(171, 211, 222, 0.9));
   cursor: s-resize;
 `
 
@@ -60,6 +60,7 @@ const MapClose = MapCover.extend`
   cursor: n-resize;
   bottom: 0;
   height: ${props => (props.expanded ? 'auto' : `${CLOSED_MAP_H / 2}px`)};
+  background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.9));
   position: absolute;
 `
 
@@ -124,7 +125,7 @@ class MapSelection extends PureComponent {
     })
 
     this.map = null
-    this.id = `map_${props.name}`
+    this.id = `map-${props.name}-${uniqueid()}`
   }
 
   mapAction = (rawLng, rawLat) => {

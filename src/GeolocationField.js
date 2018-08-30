@@ -10,20 +10,20 @@ const Row = styled.div`
   }
 `
 
-const getDefaults = schema => {
-  const defaults = {}
-  const values = ['lat', 'lng']
-  values.forEach(v => {
-    if (
-      schema.properties &&
-      schema.properties[v] !== undefined &&
-      schema.properties[v].default
-    ) {
-      defaults[v] = schema.properties[v].default
-    }
-  })
-  return defaults
-}
+// const getDefaults = schema => {
+//   const defaults = {}
+//   const values = ['lat', 'lng']
+//   values.forEach(v => {
+//     if (
+//       schema.properties &&
+//       schema.properties[v] !== undefined &&
+//       schema.properties[v].default
+//     ) {
+//       defaults[v] = schema.properties[v].default
+//     }
+//   })
+//   return defaults
+// }
 
 export default class GeolocationField extends PureComponent {
   static propTypes = {
@@ -32,16 +32,19 @@ export default class GeolocationField extends PureComponent {
     uiSchema: PropTypes.object,
     onChange: PropTypes.func,
     name: PropTypes.string.isRequired,
+    required: PropTypes.bool,
+    errorSchema: PropTypes.object,
   }
 
   static defaultProps = {
     onChange: () => {},
+    required: false,
   }
 
   state = {
     lat: null,
     lng: null,
-  };
+  }
 
   handleUpdateCoords = ({ lat, lng }) => {
     this.setState(oldState => {
@@ -65,15 +68,17 @@ export default class GeolocationField extends PureComponent {
     return event => {
       const rawValue = event.target.value
       this.setState(oldState => {
+        // eslint-disable-next-line no-unused-vars
         const [nextVal, invalid] = [
           ...computeValue(rawValue, oldState[name], name),
         ]
         if (nextVal === oldState[name]) {
           return null
         }
-        if (!invalid) {
-          this.props.onChange({ ...oldState, ...{ [name]: nextVal } })
-        }
+        // if (!invalid) {
+        //   this.props.onChange({ ...oldState, ...{ [name]: nextVal } })
+        // }
+        this.props.onChange({ ...oldState, ...{ [name]: nextVal } })
         return {
           [name]: nextVal,
         }
@@ -82,20 +87,47 @@ export default class GeolocationField extends PureComponent {
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { schema } = props
+    // const { schema } = props
     let { lat = '', lng = '' } = props.formData
-    const defaults = getDefaults(schema)
-    if (lat === '' && defaults.lat !== undefined) {
-      lat = defaults.lat
-    }
-    if (lng === '' && defaults.lng !== undefined) {
-      lng = defaults.lng
-    }
+    // const defaults = getDefaults(schema)
+    // if (lat === '' && defaults.lat !== undefined) {
+    //   lat = defaults.lat
+    // }
+    // if (lng === '' && defaults.lng !== undefined) {
+    //   lng = defaults.lng
+    // }
     return { lat, lng }
   }
 
+  getErrors = () => {
+    const { errorSchema } = this.props
+    const errors = {}
+    Object.entries(errorSchema).forEach(([k, v]) => {
+      errors[k] = v.__errors
+    })
+    return errors
+  }
+
+  showErrors(errors) {
+    if (!errors || errors.length === 0) {
+      return null
+    }
+    return (
+      <div>
+        <p />
+        <ul className='error-detail bs-callout bs-callout-info'>
+          {errors.map((err, index) => (
+            <li key={index} className='text-danger'>
+              {err}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
   render() {
-    const { schema, uiSchema, name } = this.props
+    const { schema, uiSchema, name, required } = this.props
     const { zoom, defaultLocation, height, showTitle = true } = uiSchema
     const { title, properties = {} } = schema
     const latInfo = properties.lat || {}
@@ -103,17 +135,25 @@ export default class GeolocationField extends PureComponent {
     const { lat, lng } = this.state
     const latId = `${name}_lat`
     const lngId = `${name}_lng`
+
+    const errors = this.getErrors()
+    const latClassError = errors.lat ? 'has-error' : ''
+    const lngClassError = errors.lng ? 'has-error' : ''
+
     return (
       <Row className='row'>
         {showTitle ? (
           <div className='col-xs-12'>
-            <label htmlFor={latId}>{title || name}</label>
+            <label htmlFor={latId}>
+              {title || name}
+              {required ? <span className='required'>*</span> : ''}
+            </label>
           </div>
         ) : (
           ''
         )}
         <div className='col-xs-12 col-sm-6'>
-          <div className='input-group'>
+          <div className={`input-group ${latClassError}`}>
             <span className='input-group-addon' id={latId}>
               {latInfo.title || 'Latitude'}
             </span>
@@ -128,9 +168,10 @@ export default class GeolocationField extends PureComponent {
               onChange={this.onChange('lat')}
             />
           </div>
+          {this.showErrors(errors.lat)}
         </div>
         <div className='col-xs-12 col-sm-6'>
-          <div className='input-group'>
+          <div className={`input-group ${lngClassError}`}>
             <span className='input-group-addon' id={lngId}>
               {lngInfo.title || 'Longitude'}
             </span>
@@ -145,6 +186,7 @@ export default class GeolocationField extends PureComponent {
               onChange={this.onChange('lng')}
             />
           </div>
+          {this.showErrors(errors.lng)}
         </div>
         <div className='col-xs-12'>
           <Map
