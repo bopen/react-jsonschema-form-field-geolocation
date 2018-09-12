@@ -10,24 +10,24 @@ const Row = styled.div`
   }
 `
 
-// const getDefaults = schema => {
-//   const defaults = {}
-//   const values = ['lat', 'lng']
-//   values.forEach(v => {
-//     if (
-//       schema.properties &&
-//       schema.properties[v] !== undefined &&
-//       schema.properties[v].default
-//     ) {
-//       defaults[v] = schema.properties[v].default
-//     }
-//   })
-//   return defaults
-// }
+const getDefaults = schema => {
+  const defaults = {}
+  const values = ['lat', 'lng']
+  values.forEach(v => {
+    if (
+      schema.properties &&
+      schema.properties[v] !== undefined &&
+      schema.properties[v].default
+    ) {
+      defaults[v] = schema.properties[v].default
+    }
+  })
+  return defaults
+}
 
 export default class GeolocationField extends PureComponent {
   static propTypes = {
-    formData: PropTypes.object,
+    // formData: PropTypes.object,
     schema: PropTypes.object.isRequired,
     uiSchema: PropTypes.object,
     onChange: PropTypes.func,
@@ -41,9 +41,9 @@ export default class GeolocationField extends PureComponent {
     required: false,
   }
 
-  state = {
-    lat: null,
-    lng: null,
+  constructor(props) {
+    super(props)
+    this.state = getDefaults(props.schema)
   }
 
   handleUpdateCoords = ({ lat, lng }) => {
@@ -84,19 +84,6 @@ export default class GeolocationField extends PureComponent {
         }
       })
     }
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    // const { schema } = props
-    let { lat = '', lng = '' } = props.formData
-    // const defaults = getDefaults(schema)
-    // if (lat === '' && defaults.lat !== undefined) {
-    //   lat = defaults.lat
-    // }
-    // if (lng === '' && defaults.lng !== undefined) {
-    //   lng = defaults.lng
-    // }
-    return { lat, lng }
   }
 
   getErrors = () => {

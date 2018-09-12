@@ -698,41 +698,28 @@ var _templateObject$1 = taggedTemplateLiteral(['\n  .input-group-addon {\n    mi
 
 var Row = styled.div(_templateObject$1);
 
-// const getDefaults = schema => {
-//   const defaults = {}
-//   const values = ['lat', 'lng']
-//   values.forEach(v => {
-//     if (
-//       schema.properties &&
-//       schema.properties[v] !== undefined &&
-//       schema.properties[v].default
-//     ) {
-//       defaults[v] = schema.properties[v].default
-//     }
-//   })
-//   return defaults
-// }
+var getDefaults = function getDefaults(schema) {
+  var defaults$$1 = {};
+  var values = ['lat', 'lng'];
+  values.forEach(function (v) {
+    if (schema.properties && schema.properties[v] !== undefined && schema.properties[v].default) {
+      defaults$$1[v] = schema.properties[v].default;
+    }
+  });
+  return defaults$$1;
+};
 
 var GeolocationField = function (_PureComponent) {
   inherits(GeolocationField, _PureComponent);
 
-  function GeolocationField() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
+  function GeolocationField(props) {
     classCallCheck(this, GeolocationField);
 
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+    var _this = possibleConstructorReturn(this, (GeolocationField.__proto__ || Object.getPrototypeOf(GeolocationField)).call(this, props));
 
-    return _ret = (_temp = (_this = possibleConstructorReturn(this, (_ref = GeolocationField.__proto__ || Object.getPrototypeOf(GeolocationField)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      lat: null,
-      lng: null
-    }, _this.handleUpdateCoords = function (_ref2) {
-      var lat = _ref2.lat,
-          lng = _ref2.lng;
+    _this.handleUpdateCoords = function (_ref) {
+      var lat = _ref.lat,
+          lng = _ref.lng;
 
       _this.setState(function (oldState) {
         _this.props.onChange(_extends({}, oldState, { lat: lat, lng: lng }));
@@ -741,25 +728,32 @@ var GeolocationField = function (_PureComponent) {
           lng: lng
         };
       });
-    }, _this.handleKeyPress = function (evt) {
+    };
+
+    _this.handleKeyPress = function (evt) {
       if (evt.key === 'Enter') {
         _this.map.centerMap();
         evt.preventDefault();
         evt.stopPropagation();
       }
-    }, _this.getErrors = function () {
+    };
+
+    _this.getErrors = function () {
       var errorSchema = _this.props.errorSchema;
 
       var errors = {};
-      Object.entries(errorSchema).forEach(function (_ref3) {
-        var _ref4 = slicedToArray(_ref3, 2),
-            k = _ref4[0],
-            v = _ref4[1];
+      Object.entries(errorSchema).forEach(function (_ref2) {
+        var _ref3 = slicedToArray(_ref2, 2),
+            k = _ref3[0],
+            v = _ref3[1];
 
         errors[k] = v.__errors;
       });
       return errors;
-    }, _temp), possibleConstructorReturn(_this, _ret);
+    };
+
+    _this.state = getDefaults(props.schema);
+    return _this;
   }
 
   createClass(GeolocationField, [{
@@ -771,8 +765,8 @@ var GeolocationField = function (_PureComponent) {
         var rawValue = event.target.value;
         _this2.setState(function (oldState) {
           // eslint-disable-next-line no-unused-vars
-          var _ref5 = [].concat(toConsumableArray(computeValue(rawValue, oldState[name], name))),
-              nextVal = _ref5[0];
+          var _ref4 = [].concat(toConsumableArray(computeValue(rawValue, oldState[name], name))),
+              nextVal = _ref4[0];
 
           if (nextVal === oldState[name]) {
             return null;
@@ -924,31 +918,12 @@ var GeolocationField = function (_PureComponent) {
         )
       );
     }
-  }], [{
-    key: 'getDerivedStateFromProps',
-    value: function getDerivedStateFromProps(props, state) {
-      // const { schema } = props
-      var _props$formData = props.formData,
-          _props$formData$lat = _props$formData.lat,
-          lat = _props$formData$lat === undefined ? '' : _props$formData$lat,
-          _props$formData$lng = _props$formData.lng,
-          lng = _props$formData$lng === undefined ? '' : _props$formData$lng;
-      // const defaults = getDefaults(schema)
-      // if (lat === '' && defaults.lat !== undefined) {
-      //   lat = defaults.lat
-      // }
-      // if (lng === '' && defaults.lng !== undefined) {
-      //   lng = defaults.lng
-      // }
-
-      return { lat: lat, lng: lng };
-    }
   }]);
   return GeolocationField;
 }(PureComponent);
 
 GeolocationField.propTypes = {
-  formData: PropTypes.object,
+  // formData: PropTypes.object,
   schema: PropTypes.object.isRequired,
   uiSchema: PropTypes.object,
   onChange: PropTypes.func,
