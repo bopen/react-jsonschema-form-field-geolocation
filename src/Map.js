@@ -56,7 +56,7 @@ const MapCover = styled.button`
   cursor: s-resize;
 `
 
-const MapClose = MapCover.extend`
+const MapClose = styled(MapCover)`
   cursor: n-resize;
   bottom: 0;
   height: ${props => (props.expanded ? 'auto' : `${CLOSED_MAP_H / 2}px`)};

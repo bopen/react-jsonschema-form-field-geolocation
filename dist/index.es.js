@@ -518,7 +518,7 @@ var MapCover = styled.button(_templateObject2, function (props) {
   return props.expanded ? 'auto' : CLOSED_MAP_H + 'px';
 });
 
-var MapClose = MapCover.extend(_templateObject3, function (props) {
+var MapClose = styled(MapCover)(_templateObject3, function (props) {
   return props.expanded ? 'auto' : CLOSED_MAP_H / 2 + 'px';
 });
 

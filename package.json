@@ -1,6 +1,6 @@
 {
   "name": "react-jsonschema-form-field-geolocation",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Geolocation field for react-jsonschema-form",
   "author": {
     "name": "B-Open Solutions",
@@ -8,7 +8,11 @@
     "url": "http://www.bopen.it/"
   },
   "license": "MIT",
-  "repository": "bopen/react-jsonschema-form-field-geolocation",
+  "homepage": "https://github.com/bopen/react-jsonschema-form-field-geolocation",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bopen/react-jsonschema-form-field-geolocation.git"
+  },
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
@@ -31,7 +35,7 @@
     "prop-types": "^15.5.4",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "styled-components": "^3.4.2"
+    "styled-components": "^3.4.2 || ^4.1.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -70,7 +74,7 @@
     "rollup-plugin-peer-deps-external": "^2.2.0",
     "rollup-plugin-postcss": "^1.6.2",
     "rollup-plugin-url": "^1.4.0",
-    "styled-components": "^3.4.2"
+    "styled-components": "^4.1"
   },
   "files": [
     "dist"
