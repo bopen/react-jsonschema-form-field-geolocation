@@ -488,9 +488,9 @@ var toConsumableArray = function (arr) {
 };
 
 var _templateObject = taggedTemplateLiteral(['\n  margin-top: 1em;\n  margin-bottom: 1em;\n  height: ', ';\n  overflow-y: hidden;\n  // box-shadow: 0px 30px 40px rgba(0,0,0,.1);\n'], ['\n  margin-top: 1em;\n  margin-bottom: 1em;\n  height: ', ';\n  overflow-y: hidden;\n  // box-shadow: 0px 30px 40px rgba(0,0,0,.1);\n']),
-    _templateObject2 = taggedTemplateLiteral(['\n  display: block;\n  width: 100%;\n  border: 0;\n  margin: 0;\n  padding: 0;\n  height: ', ';\n  background: linear-gradient(rgba(171, 211, 222, 0.1), rgba(171, 211, 222, 0.9));\n  cursor: s-resize;\n'], ['\n  display: block;\n  width: 100%;\n  border: 0;\n  margin: 0;\n  padding: 0;\n  height: ', ';\n  background: linear-gradient(rgba(171, 211, 222, 0.1), rgba(171, 211, 222, 0.9));\n  cursor: s-resize;\n']),
-    _templateObject3 = taggedTemplateLiteral(['\n  cursor: n-resize;\n  bottom: 0;\n  height: ', ';\n  background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.9));\n  position: absolute;\n'], ['\n  cursor: n-resize;\n  bottom: 0;\n  height: ', ';\n  background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.9));\n  position: absolute;\n']),
-    _templateObject4 = taggedTemplateLiteral(['\n  height: ', ';\n  cursor: pointer;\n  position: relative\n  top: ', ';\n  ', '\n'], ['\n  height: ', ';\n  cursor: pointer;\n  position: relative\n  top: ', ';\n  ', '\n']);
+    _templateObject2 = taggedTemplateLiteral(['\n  display: block;\n  width: 100%;\n  border: 0;\n  margin: 0;\n  padding: 0;\n  height: ', ';\n  background: linear-gradient(\n    rgba(171, 211, 222, 0.1),\n    rgba(171, 211, 222, 0.9)\n  );\n  cursor: s-resize;\n  position: relative;\n  z-index: 2;\n'], ['\n  display: block;\n  width: 100%;\n  border: 0;\n  margin: 0;\n  padding: 0;\n  height: ', ';\n  background: linear-gradient(\n    rgba(171, 211, 222, 0.1),\n    rgba(171, 211, 222, 0.9)\n  );\n  cursor: s-resize;\n  position: relative;\n  z-index: 2;\n']),
+    _templateObject3 = taggedTemplateLiteral(['\n  cursor: n-resize;\n  bottom: 0;\n  height: ', ';\n  background: linear-gradient(\n    rgba(255, 255, 255, 0.1),\n    rgba(255, 255, 255, 0.9)\n  );\n  position: absolute;\n'], ['\n  cursor: n-resize;\n  bottom: 0;\n  height: ', ';\n  background: linear-gradient(\n    rgba(255, 255, 255, 0.1),\n    rgba(255, 255, 255, 0.9)\n  );\n  position: absolute;\n']),
+    _templateObject4 = taggedTemplateLiteral(['\n  height: ', ';\n  cursor: pointer;\n  position: relative;\n  top: ', ';\n  z-index: 1;\n'], ['\n  height: ', ';\n  cursor: pointer;\n  position: relative;\n  top: ', ';\n  z-index: 1;\n']);
 
 var zoomslider = new ZoomSlider();
 
@@ -526,8 +526,6 @@ var MapArea = styled.div(_templateObject4, function (props) {
   return props.height;
 }, function (props) {
   return props.expanded ? '0' : '-' + CLOSED_MAP_H + 'px';
-}, function (props) {
-  return props.expanded ? '' : 'z-index: -1;';
 });
 
 var nop = function nop() {};
@@ -704,6 +702,8 @@ var getDefaults = function getDefaults(schema) {
   values.forEach(function (v) {
     if (schema.properties && schema.properties[v] !== undefined && schema.properties[v].default) {
       defaults$$1[v] = schema.properties[v].default;
+    } else {
+      defaults$$1[v] = undefined;
     }
   });
   return defaults$$1;
@@ -868,7 +868,7 @@ var GeolocationField = function (_PureComponent) {
               'aria-describedby': latId,
               type: 'text',
               id: latId + '_field',
-              value: lat,
+              value: lat || '',
               onKeyPress: this.handleKeyPress,
               onChange: this.onChange('lat')
             })
@@ -892,7 +892,7 @@ var GeolocationField = function (_PureComponent) {
               'aria-describedby': lngId,
               type: 'text',
               id: lngId + '_field',
-              value: lng,
+              value: lng || '',
               onKeyPress: this.handleKeyPress,
               onChange: this.onChange('lng')
             })
@@ -907,8 +907,8 @@ var GeolocationField = function (_PureComponent) {
               return _this3.map = map;
             },
             name: name,
-            centerLat: lat || defaultLocation.lat,
-            centerLng: lng || defaultLocation.lng,
+            centerLat: lat && typeof lat === 'number' ? lat : defaultLocation.lat,
+            centerLng: lng && typeof lng === 'number' ? lng : defaultLocation.lng,
             lat: lat,
             lng: lng,
             height: height,

@@ -34,19 +34,25 @@ schema2.properties.position.properties = {
   lng: { type: "number", title: "Atlantis longitude" }
 };
 
+const schema3 = cloneDeep(schema1);
+schema3.title = "Position field not required";
+schema3.required = ["title"];
+schema3.properties.position.required = [];
+
 const uiSchema1 = {
   position: {
     "ui:field": "geolocation",
     zoom: 7,
     defaultLocation: {
-      lat: 51.50853,
-      lng: -0.076132
+      lat: 34.84015,
+      lng: 18.88446
     },
     height: "40vh"
   }
 };
 
 const uiSchema2 = cloneDeep(uiSchema1);
+const uiSchema3 = cloneDeep(uiSchema1);
 
 // const formData = {
 //   title: 'Welcome!',
@@ -60,6 +66,7 @@ class App extends Component {
   state = {
     formData1: {},
     formData2: {},
+    formData3: {},
     eventType: null,
     output: ""
   };
@@ -102,6 +109,20 @@ class App extends Component {
           />
           <strong>{eventType}</strong>
           <pre>{JSON.stringify(this.state.formData2, undefined, 2)}</pre>
+        </div>
+        <div className="well">
+          <Form
+            fields={{ geolocation: GeolocationField }}
+            schema={schema3}
+            uiSchema={uiSchema3}
+            formData={this.state.formData3}
+            noHtml5Validate
+            onChange={this.log("change", "formData3")}
+            onSubmit={this.log("submit", "formData3")}
+            onError={this.log("errors", "formData3")}
+          />
+          <strong>{eventType}</strong>
+          <pre>{JSON.stringify(this.state.formData3, undefined, 2)}</pre>
         </div>
       </main>
     );

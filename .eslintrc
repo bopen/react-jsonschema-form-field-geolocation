@@ -1,16 +1,11 @@
 {
   "parser": "babel-eslint",
-  "extends": [
-    "standard",
-    "standard-react"
-  ],
+  "extends": ["standard", "standard-react"],
   "env": {
     "es6": true,
     "jest": true
   },
-  "plugins": [
-    "react"
-  ],
+  "plugins": ["react"],
   "parserOptions": {
     "sourceType": "module"
   },
@@ -21,6 +16,8 @@
     // allow specifying true explicitly for boolean props
     "react/jsx-boolean-value": 0,
 
-    "comma-dangle": [1, "always-multiline"]
+    "comma-dangle": [1, "always-multiline"],
+
+    "semi": ["warn", "always"]
   }
 }
