@@ -41,7 +41,7 @@
     "react": "^16.13.1",
     "react-dev-utils": "^5.0.2",
     "react-dom": "^16.13.1",
-    "react-jsonschema-form": "^1.0.4",
+    "react-jsonschema-form": "^1.8.1",
     "react-jsonschema-form-field-geolocation": "link:..",
     "resolve": "1.17.0",
     "style-loader": "0.19.0",
