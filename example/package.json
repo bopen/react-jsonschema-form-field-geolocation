@@ -34,7 +34,7 @@
     "ol": "^5.1.3",
     "ol-geocoder": "^3.2.0",
     "postcss-flexbugs-fixes": "3.2.0",
-    "postcss-loader": "2.0.8",
+    "postcss-loader": "2.1.6",
     "promise": "8.0.1",
     "prop-types": "^15.6.2",
     "raf": "3.4.0",
