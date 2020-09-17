@@ -5121,9 +5121,10 @@ ol-geocoder@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/ol-geocoder/-/ol-geocoder-3.2.0.tgz#b80cabe8ee95297b78531927ff60f86dde5440bb"
 
-ol@^5.1.3:
-  version "5.1.3"
-  resolved "https://registry.yarnpkg.com/ol/-/ol-5.1.3.tgz#43f8fd796914c0436852cbc2087223943c0d9c7b"
+ol@^5.3.3:
+  version "5.3.3"
+  resolved "https://registry.yarnpkg.com/ol/-/ol-5.3.3.tgz#ad39b7b485fdbae4b3e1535a0a07cc5d88b0b9b5"
+  integrity sha512-7eU4x8YMduNcED1D5wI+AMWDRe7/1HmGfsbV+kFFROI9RNABU/6n4osj6Q3trZbxxKnK2DSRIjIRGwRHT/Z+Ww==
   dependencies:
     pbf "3.1.0"
     pixelworks "1.1.0"
