@@ -86,6 +86,6 @@
     "dist"
   ],
   "dependencies": {
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.21"
   }
 }
